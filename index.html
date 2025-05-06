@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rental Mobil Hidayah</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #f5f8fb;
+      color: #222;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+    }
+    header {
+      background: #004a99;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 10000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px 10px;
+      font-weight: 600;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    nav a:hover, nav a:focus {
+      background-color: #003366;
+      outline: none;
+    }
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    section {
+      margin-bottom: 50px;
+    }
+    h1,h2,h3 {
+      font-weight: 700;
+      color: #003366;
+    }
+    h1 {
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 18px;
+      border-bottom: 3px solid #004a99;
+      padding-bottom: 6px;
+      max-width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    p.lead {
+      font-size: 1.2rem;
+      color: #555;
+      text-align: center;
+      margin-bottom: 20px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+    /* Cars list */
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .car-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+    .car-card:hover {
+      transform: translateY(-5px);
+    }
+    .car-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-bottom: 4px solid #004a99;
+    }
+    .car-info {
+      padding: 15px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .car-info h3 {
+      margin-bottom: 5px;
+      font-size: 1.3rem;
+      color: #00244d;
+    }
+    .car-info p {
+      flex-grow: 1;
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .car-price {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #004a99;
+      margin-bottom: 10px;
+    }
+    .car-seats {
+      font-size: 0.95rem;
+      color: #777;
+      margin-bottom: 12px;
+    }
+    .btn-whatsapp {
+      background-color: #25D366;
+      color: white;
+      font-weight: 700;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: background-color 0.3s;
+      display: block;
+      margin-top: auto;
+    }
+    .btn-whatsapp:hover, .btn-whatsapp:focus {
+      background-color: #1ebe57;
+      outline: none;
+    }
+    /* Reviews */
+    .reviews-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .review-card {
+      background: white;
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #222;
+      position: relative;
+    }
+    .review-card::before {
+      content: "“";
+      font-size: 3.5rem;
+      color: #004a99;
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-weight: 700;
+      opacity: 0.15;
+      font-family: serif;
+    }
+    .review-author {
+      margin-top: 14px;
+      font-weight: 700;
+      color: #004a99;
+      text-align: right;
+      font-size: 1rem;
+    }
+    /* LAYANAN */
+        .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 0 10px;
+    }
+    .service {
+      background: white;
+      border-radius: 22px;
+      padding: 30px 25px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgb(0 0 0 / 0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+      user-select:none;
+    }
+    .service:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 55px rgb(0 0 0 / 0.22);
+    }
+    .service h3 {
+      font-size: 1.7rem;
+      margin-bottom: 20px;
+      color: #124d91;
+    }
+    .service p {
+      font-weight: 500;
+      color: #425268;
+      min-height: 80px;
+    }
+    /* FAQ */
+    #faq .faq-item {
+      max-width: 500px;
+      margin: 0 auto 5px;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+    }
+    .faq-question {
+      background: #004a99;
+      color: white;
+      padding: 0px 0px;
+      cursor: pointer;
+      font-weight: 400;
+      font-size: 1.1rem;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-answer {
+      max-height: 0;
+      padding: 0 5px;
+      color: #222;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: max-height 0.35s ease, padding-top 0.35s ease, padding-bottom 0.35s ease;
+      overflow: hidden;
+    }
+    .faq-answer.open {
+      max-height: 300px;
+      padding: 5px 5px 5px;
+    }
+    .arrow {
+      transition: transform 0.3s ease;
+      font-size: 1.5rem;
+      margin-left: 20px;
+    }
+    .arrow.open {
+      transform: rotate(180deg);
+    }
+    /* Gmaps Embed */
+    #maps iframe {
+      border: none;
+      border-radius: 12px;
+      width: 100%;
+      height: 300px;
+      max-width: 500px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+    }
+        /* Enhanced Tentang Kami section */
+        #tentang-kami .about-container {
+      display: flex;
+      gap: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      user-select: text;
+      padding: 0 1rem;
+    }
+    #tentang-kami .about-text {
+      flex: 1 1 60%;
+    }
+    #tentang-kami .about-text h3 {
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: #003a75;
+      margin-bottom: 1rem;
+      border-left: 5px solid #ffd500;
+      padding-left: 1rem;
+      user-select: text;
+    }
+    #tentang-kami .about-text p {
+      font-size: 1.12rem;
+      color: #2a3f60;
+      line-height: 1.6;
+      user-select: text;
+    }
+    #tentang-kami .contact-info {
+      flex: 1 1 40%;
+      background: #f0f5ff;
+      border-radius: 14px;
+      box-shadow: 0 10px 32px rgb(0 74 173 / 0.12);
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      user-select: none;
+    }
+    #tentang-kami .contact-info h3 {
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: #004aad;
+      margin-bottom: 1.25rem;
+      user-select: text;
+    }
+    #tentang-kami address {
+      font-style: normal;
+      font-weight: 600;
+      color: #1d2a4d;
+      margin-bottom: 1.7rem;
+      line-height: 1.5;
+      user-select: text;
+    }
+    #tentang-kami address a {
+      color: #004aad;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    #tentang-kami .social-links {
+      display: flex;
+      gap: 1.6rem;
+      justify-content: flex-start;
+      font-size: 2.4rem;
+      margin-top: 0.4rem;
+      user-select: none;
+    }
+    #tentang-kami .social-links a {
+      color: #004aad;
+      border-radius: 50%;
+      background: #d0dfff;
+      box-shadow: 0 4px 12px rgb(0 74 173 / 0.15);
+      padding: 0.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.35s ease, color 0.35s ease, transform 0.35s ease;
+      cursor: pointer;
+    }
+    #tentang-kami .social-links a:hover,
+    #tentang-kami .social-links a:focus {
+      background: #004aad;
+      color: #ffd500;
+      outline: none;
+      transform: scale(1.18);
+      box-shadow: 0 6px 22px rgb(255 213 0 / 0.9);
+    }
+    /* Responsive adjustments for Tentang Kami */
+    @media (max-width: 840px) {
+      #tentang-kami .about-container {
+        flex-direction: column;
+        padding: 0 1rem;
+      }
+      #tentang-kami .about-text, #tentang-kami .contact-info {
+        flex: none;
+        width: 100%;
+      }
+      #tentang-kami .contact-info {
+        margin-top: 2.5rem;
+      }
+      #tentang-kami .social-links {
+        justify-content: center;
+      }
+    }
+    /* About */
+    h1 {
+       text-align: center;
+       color: #333;
+    }
+    h3 {
+      text-align: center;
+      color: #004aad;
+      margin-bottom: 1.25rem;
+      user-select: text;
+    }
+        .gallery {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+        }
+        .thumbnail {
+      width: 100px;
+      height: auto;
+      cursor: pointer;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      transition: border-color 0.3s;
+        }
+        .thumbnail:hover {
+        border-color: #007bff;
+        }
+    /* About */
+    #about {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.6;
+      padding: 0 15px;
+      text-align: center;
+    }
+    /* FOOTER */
+    footer {
+      background: linear-gradient(90deg, #003366, #005cbf);
+      text-align: center;
+      padding: 5px 5px;
+      font-weight: 400;
+      font-size: 1rem;
+      user-select: none;
+      margin-top: 0px;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      main {
+        padding: 0 15px;
+      }
+      .cars-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      }
+      #maps iframe {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+<header role="banner">
+  <nav role="navigation" aria-label="Menu Navigasi Utama">
+    <a href="#home" tabindex="0">Home</a>
+    <a href="#pemesanan" tabindex="0">Pemesanan</a>
+    <a href="#keunggulan" tabindex="0">Keunggulan Layanan</a>
+    <a href="#faq" tabindex="0">FAQ</a>
+    <a href="#galeripelayanan" tabindex="0">Galeri Pelayanan</a>
+    <a href="#kontak" tabindex="0">Kontak</a>
+    <a href="#about" tabindex="0">Tentang Kami</a>
+  </nav>
+</header>
+
+<main role="main" tabindex="0">
+  <section id="home" aria-label="Beranda Rental Mobil Hidayah" style="margin-top:40px;">
+    <h1>Rental Mobil Hidayah Semarang</h1>
+    <p class="lead">Menyediakan layanan rental mobil terpercaya dengan armada terbaik, bersih dan harga kompetitif. Pilih mobil impianmu dan pesan mudah lewat WhatsApp kami!</p>
+  </section>
+
+  <section id="keunggulan" aria-label="Daftar Mobil Rental">
+    <h2>Daftar Mobil Terupdate 2025</h2>
+    <div class="cars-grid">
+      <article class="car-card" aria-label="Mobil Pajero, harga 1.2 juta per hari, 7 kursi">
+        <img src="https://asset.kompas.com/crops/pqNZKu-rk4RixzgXJOhwe7sEC6g=/0x0:6000x4000/1200x800/data/photo/2022/01/13/61e03fda79c68.jpg" alt="Mobil Mitsubishi Pajero warna hitam" class="car-img" />
+        <div class="car-info">
+          <h3>Fortuner GR Sport</h3>
+          <p>SUV mewah, tangguh dan luas, cocok untuk perjalanan keluarga dan bisnis.</p>
+          <p class="car-price">Rp 1.500.000 / hari (Pakai Driver).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Fortuner%20GR%20Sport.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Pajero melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Pajero, harga 1.2 juta per hari, 7 kursi">
+        <img src="https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/p1/961/2024/05/09/Mitsubishi-Pajero-Sport-Dakar-2016-4178563189.jpg" alt="Mobil Mitsubishi Pajero warna hitam" class="car-img" />
+        <div class="car-info">
+          <h3>Pajero Sport</h3>
+          <p>MPV tangguh dan luas, cocok untuk perjalanan keluarga dan bisnis.</p>
+          <p class="car-price">Rp 1.500.000 / hari (Pakai Driver).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Pajero%20Sport.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Pajero melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Alphard, harga 2 juta per hari, 7 kursi">
+        <img src="https://imgx.gridoto.com/crop/90x30:1213x719/700x465/filters:watermark(file/2017/gridoto/img/watermark_otomotifnet.png,5,5,60)/photo/2021/08/05/toyota-alphard-25-g-2016jpeg-20210805055152.jpeg" alt="Mobil Toyota Alphard warna hitam" class="car-img" />
+        <div class="car-info">
+          <h3>Alphard Transformer</h3>
+          <p>Mobil mewah dengan fasilitas lengkap, cocok untuk VIP dan keluarga.</p>
+          <p class="car-price">Rp 3.000.000 / hari (Pakai Driver).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Alphard%20Transformer.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Alphard melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Alphard, harga 2 juta per hari, 7 kursi">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVZlF8OWW6p31uIrhHQMi7VmQSC0XiIPvCORbDriFlMLQpbuFC2ph-TIWHwun3NmdPSVk&usqp=CAU" alt="Mobil Toyota Alphard warna hitam" class="car-img" />
+        <div class="car-info">
+          <h3>New Alphard Tranformer</h3>
+          <p>Versi terbaru dari Alphard dengan desain yang lebih elegan dan fitur-fitur canggih, cocok untuk VIP dan keluarga.</p>
+          <p class="car-price">Rp 3.500.000 / hari (Pakai Driver).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20New%20Alphard%20Transformer.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Alphard melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2023/05/30/20230530125526-4580.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Innova Reborn</h3>
+          <p>MPV populer yang nyaman dan tahan banting untuk perjalanan keluarga.</p>
+          <p class="car-price">Rp 425.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Innova%20Reborn.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://indomobilindo.com/wp-content/uploads/2023/02/Toyota-Innova-Reborn-2.4-V-Diesel-2022.webp" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Innova Reborn Facelift</h3>
+          <p>MPV populer yang nyaman dengan desain yang lebih modern, fitur tambahan dan tahan banting untuk perjalanan keluarga.</p>
+          <p class="car-price">Rp 450.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Innova%20Reborn%20Facelift.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2023/09/06/20230906104717-1454.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Innova Venturer Facelift</h3>
+          <p>MPV populer yang nyaman, dengan tampilan agresif dan fitur premium dan tahan banting untuk perjalanan keluarga.</p>
+          <p class="car-price">Rp 750.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Innova%20Venturer%20Facelift.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2024/06/12/20240612094037-03d3.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>New Innova Zenix Type G</h3>
+          <p>MPV terbaru dengan desain yang lebih stylish dan teknologi mutakhir dan cocok untuk keluarga dan bisnis.</p>
+          <p class="car-price">Rp 600.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20New%20Innova%20Zenix%20Type%20G.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2024/06/06/20240606082351-d9e7.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>New Innova Zenix Type G Hybrid</h3>
+          <p>MPV terbaru dengan desain yang lebih stylish dan teknologi mutakhir dan cocok untuk keluarga dan bisnis.</p>
+          <p class="car-price">Rp 650.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20New%20Innova%20Zenix%20Type%20G%20Hybrid.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://imgx.gridoto.com/crop/0x0:0x0/700x500/photo/2022/12/08/screenshot_20221208-163035_insta-20221208043802.jpg" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>New Innova Zenix Type V Hybrid </h3>
+          <p>MPV terbaru dengan desain yang lebih stylish dan teknologi mutakhir dan cocok untuk keluarga dan bisnis.</p>
+          <p class="car-price">Rp 750.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20New%20Innova%20Zenix%20Type%20V%20Hybrid.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://imgx.gridoto.com/crop/12x29:1267x725/700x465/photo/2025/01/04/innova-zenixjpg-20250104081423.jpg" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>New Innova Zenix Type Q</h3>
+          <p>MPV terbaru dengan desain yang lebih stylish, fitur canggih, interior mewah dan cocok untuk keluarga dan bisnis.</p>
+          <p class="car-price">Rp 1.100.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20New%20Innova%20Zenix%20Type%20Q.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2023/05/15/20230515214706-34ab.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Mitsubisi Xpander </h3>
+          <p>MPV compact dengan desain modern dan ruang kabin yang luas, menawarkan kenyamanan untuk perjalanan keluarga sehari-hari.</p>
+          <p class="car-price">Rp 325.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Mitsubisi%20Xpander.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2023/11/03/20231103162457-69dd.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>New Avanza Manual</h3>
+          <p>MPV stylish dengan fitur keselamatan dan kenyamanan terbaru, cocok untuk keluarga dan bisnis</p>
+          <p class="car-price">Rp 300.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20New%20Avanza%20Manual.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img5.icarcdn.com/75366921/gallery_mobil-baru-mobil123-honda-brio-s-satya-hatchback-indonesia_000075366921_719a845e_1be6_4d07_a78f_4c1b566c4c45.jpeg.webp?smia=xTM" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>All New Brio</h3>
+          <p> Mobil compact dan irit bahan bakar, sempurna untuk penggunaan dalam kota dan parkir mudah.</p>
+          <p class="car-price">Rp 275.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">5 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20All%20New%20Brio.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil New Terios, harga 700 ribu per hari, 7 kursi">
+        <img src="https://img4.icarcdn.com/7377456/gallery_used-car-mobil123-daihatsu-terios-r-deluxe-suv-indonesia_7377456_Uvnu2EWOaEf0BDJMWksShB.jpg?smia=xTM" alt="Mobil Daihatsu New Terios warna merah" class="car-img" />
+        <div class="car-info">
+          <h3>All New Terios</h3>
+          <p>SUV kompak dengan kemampuan off-road, menawarkan ruang yang cukup untuk keluarga dan barang, cocok untuk keluarga dan petualangan</p>
+          <p class="car-price">Rp 300.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20All%20New%20Terios.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil New Terios melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Xenia, harga 650 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/crop/640x360/2024/01/19/20240119082128-cfc1.png" alt="Mobil Daihatsu Xenia warna silver" class="car-img" />
+        <div class="car-info">
+          <h3>Grand New Xenia</h3>
+          <p>MPV yang terjangkau dan praktis, menawarkan ruang yang cukup untuk keluarga dan barang, ideal untuk perjalanan jarak jauh.</p>
+          <p class="car-price">Rp 250.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Grand%20New%20Xenia.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Xenia melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2022/02/03/20220203140356-4bce.jpg" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Grand New Avanza</h3>
+          <p>MPV populer yang dikenal dengan kepraktisan dan efisiensinya, cocok untuk keluarga dan perjalanan bisnis.</p>
+          <p class="car-price">Rp 250.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Grand%20New%20Avanza.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img5.icarcdn.com/94196961/main-l_mobil-bekas-mobil123-toyota-avanza-g-mpv-indonesia_a0e77502-da24-4214-9501-3d7314ac62e1.jpg.webp?smia=xTM" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Avanza CVT</h3>
+          <p>MPV populer yang dikenal dengan kepraktisan dan efisiensinya, cocok untuk keluarga dan perjalanan bisnis.</p>
+          <p class="car-price">Rp 300.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Avanza%20CVT.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2023/08/02/20230802194222-aa77.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Xenia CVT</h3>
+          <p>MPV populer yang dikenal dengan kepraktisan dan efisiensinya, cocok untuk keluarga dan perjalanan bisnis.</p>
+          <p class="car-price">Rp 300.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">7 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Xenia%20CVT.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img.cintamobil.com/resize/600x-/2024/03/08/20240308134131-b3b3.png" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Pick Up AC PS </h3>
+          <p>MKendaraan komersial yang kuat dan fungsional, ideal untuk pengangkutan barang dan kebutuhan bisnis.</p>
+          <p class="car-price">Rp 225.000 / hari (Lepas Kunci).</p>
+          <p class="car-seats">2 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Pick%20Up%20AC%PS.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://dianbali.sirv.com/WP_dianbalicarrental.com/2023/04/isuzu-elf.jpg" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Elf Giga</h3>
+          <p>Kendaraan niaga yang luas, cocok untuk transportasi penumpang dalam jumlah besar, ideal untuk perjalanan grup.</p>
+          <p class="car-price">Rp 1.500.000 / hari (Pakai Driver).</p>
+          <p class="car-seats">15-20 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Elf%20Giga.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://img5.icarcdn.com/71617441/gallery_mobil-baru-mobil123-toyota-hiace-commuter-van-wagon-indonesia_000071617441_d29b0e19_ad50_4a57_9dde_bfaf9f885eb3.jpg.webp?smia=xTM" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Toyota Hiace Commuter </h3>
+          <p>transportasi penumpang dan barang, sering digunakan untuk perjalanan bisnis dan wisata.</p>
+          <p class="car-price">Rp 1.500.000 / hari (Pakai Driver).</p>
+          <p class="car-seats">14-16 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Toyota%20Hiace%20Commuter.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://www.yoshitransholiday.com/wp-content/uploads/2023/03/YT-99-1024x585.jpg" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Hiace Premio Luxury</h3>
+          <p>Varian Hiace dengan fitur tambahan dan desain yang lebih modern, cocok untuk keluarga dan bisnis.</p>
+          <p class="car-price">Rp 2.500.000 / hari (Pakai Driver) </p>
+          <p class="car-seats">8 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Hiace%20Premio%20Luxury.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+
+      <article class="car-card" aria-label="Mobil Innova, harga 900 ribu per hari, 7 kursi">
+        <img src="https://jakartarentbus.com/wp-content/uploads/2024/12/keunggulan-toyota-hiace.jpg" alt="Mobil Toyota Innova warna abu" class="car-img" />
+        <div class="car-info">
+          <h3>Hiace Premio </h3>
+          <p>Versi premium dari Hiace, menawarkan kenyamanan ekstra dan fitur mewah untuk perjalanan yang lebih elegan, cocok untuk keluarga dan bisnis.</p>
+          <p class="car-price">Rp 2.000.000 / hari (Pakai Driver).</p>
+          <p class="car-seats">14-16 Kursi</p>
+          <a href="https://wa.me/6289521413525?text=Hallo%20Rental%20Mobil%20Hidayah%2C%20Saya%20ingin%20menyewa%20mobil%20Hiace%20Premio.%20Apakah%20ready%20kak?" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Pesan mobil Innova melalui Whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="keungulan layanan" tabindex="0" aria-label="Layanan">
+    <h2>Alasan Memilih Rental Mobil Hidayah</h2>
+    <p class="lead">Kenyamanan dan Keamanan pelanggan adalah prioritas kami</p>
+    <div class="services" role="list">
+      <article class="service" role="listitem" tabindex="0" aria-label="Mobil Terbaik">
+        <h3>Mobil Terbaik</h3>
+        <p>Kami menyediakan mobil-mobil terbaik untuk kenyamanan Anda.</p>
+      </article>
+      <article class="service" role="listitem" tabindex="0" aria-label="Driver Berpengalaman">
+        <h3>Driver Berpengalaman</h3>
+        <p>Driver kami berpengalaman dan siap membantu perjalanan Anda.</p>
+      </article>
+      <article class="service" role="listitem" tabindex="0" aria-label="Harga Terjangkau">
+        <h3>Harga Terjangkau</h3>
+        <p>Harga sewa yang kompetitif dan transparan tanpa biaya tersembunyi.</p>
+      </article>
+      <article class="service" role="listitem" tabindex="0" aria-label="Harga Terjangkau">
+      <h3>Pelayanan No.#1</h3>
+      <p>Kami memahami betapa pentingnya pelayanan yang memuaskan dalam memberikan pengalaman terbaik.</p>
+        </article>
+     </article>
+     <article class="service" role="listitem" tabindex="0" aria-label="Harga Terjangkau">
+     <h3>Booking Mudah</h3>
+     <p>Punya Rencana Perjalanan Wisata atau Perjalanan bisnis? Tim Berpengalaman akan Merespon Anda Paling Cepat!.</p>
+     </article>
+     <article class="service" role="listitem" tabindex="0" aria-label="Harga Terjangkau">
+        <h3>Banyak Pilihan</h3>
+        <p>Apa pun preferensi Anda, kami memiliki pilihan yang tepat untuk.</p>
+    </article>
+      
+    </div>
+  </section>
+
+  <section id="pemesanan" aria-label="Pemesanan Rental Mobil">
+    <h2>Pemesanan Mudah Lewat WhatsApp</h2>
+    <p class="lead" style="max-width:650px; margin:0 auto 25px;">
+      Pilih mobil yang Anda inginkan pada daftar mobil di atas dan klik tombol "Pesan via WhatsApp" untuk langsung menghubungi kami dengan pesan yang sudah otomatis tersiapkan. Kami siap melayani kebutuhan rental Anda dengan cepat dan ramah.
+    </p>
+  </section>
+
+  <section id="review" aria-label="Testimoni Customer">
+    <h2>Review Pelanggan</h2>
+    <div class="reviews-container">
+      <div class="review-card" tabindex="0">
+        <p>"Pelayanan sangat memuaskan. Mobil bersih dan nyaman selama perjalanan wisata keluarga kami."</p>
+        <p class="review-author">&mdash; Andi Prasetyo</p>
+      </div>
+      <div class="review-card" tabindex="0">
+        <p>"Proses pemesanan cepat dan mudah lewat WhatsApp. Harga sangat kompetitif dibanding tempat lain."</p>
+        <p class="review-author">&mdash; Sari Wulandari</p>
+      </div>
+      <div class="review-card" tabindex="0">
+        <p>"Armada lengkap dan semua mobil dalam kondisi prima. Sangat direkomendasikan!"</p>
+        <p class="review-author">&mdash; Budi Santoso</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" aria-label="Frequently Asked Questions">
+    <h2>FAQ</h2>
+    <article class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq1" id="faq1-btn" aria-label="Pertanyaan: Berapa lama minimal penyewaan mobil?">
+        Berapa lama minimal penyewaan mobil?
+        <span class="arrow">&#x25BC;</span>
+      </button>
+      <div class="faq-answer" id="faq1" role="region" aria-labelledby="faq1-btn" hidden>
+        <p>Minimal penyewaan adalah 12 jam atau 1 hari penuh. Untuk sewa lebih dari 7 hari, kami berikan diskon khusus.</p>
+      </div>
+    </article>
+    <article class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq2" id="faq2-btn" aria-label="Pertanyaan: Bagaimana proses pembayaran?">
+        Bagaimana proses pembayaran?
+        <span class="arrow">&#x25BC;</span>
+      </button>
+      <div class="faq-answer" id="faq2" role="region" aria-labelledby="faq2-btn" hidden>
+        <p>Pembayaran dapat dilakukan melalui transfer bank atau secara tunai saat pengambilan mobil.</p>
+      </div>
+    </article>
+    <article class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq3" id="faq3-btn" aria-label="Pertanyaan: Apa saja dokumen yang harus disiapkan?">
+        Apa saja dokumen yang harus disiapkan?
+        <span class="arrow">&#x25BC;</span>
+      </button>
+      <div class="faq-answer" id="faq3" role="region" aria-labelledby="faq3-btn" hidden>
+        <p>Anda perlu menyiapkan fotokopi KTP/SIM dan menyerahkan aslinya saat pengambilan mobil.</p>
+      </div>
+    </article>
+    <article class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq4" id="faq4-btn" aria-label="Pertanyaan: Apakah sopir disediakan?">
+        Apakah sopir disediakan?
+        <span class="arrow">&#x25BC;</span>
+      </button>
+      <div class="faq-answer" id="faq4" role="region" aria-labelledby="faq4-btn" hidden>
+        <p>Kami menyediakan sopir berpengalaman dengan biaya tambahan sesuai kesepakatan.</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="gallery-pelayanan" tabindex="0" aria-label="Galeri pelayanan rental mobil">
+    <h2>Pelayanan</h2>
+    <h3>Kami sudah dipercaya oleh 200+ perusahaan dan Instansi Pemerintah </h3>
+      <div class="gallery">
+        <img class="thumbnail" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEij2BZ83E-sxqy6OtqbapPbk0rleBD8ZeyMF5qsIxvmOqr5XHSAZ3GhyphenhyphenhRL4-C9lNHSh4pZoCDiSvNTAhRQH1BaLcU_K5pNOU5AQ8SxZRBpM5D9t3BNDSmt0yT63fQPS9SD5a9pdjXu0ZP0C4VLeNP85fpueg97XCmbMnCBwxqQmzhCk73avJ7tjAGT/s320/GKL48_Polda%20Jawa%20Tengah%20-%20koleksilogo.com.png" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://png.pngtree.com/png-clipart/20221223/original/pngtree-logo-attr-bpn-png-image_8799827.png" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="data:image/png;base64,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" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELEPnz-vAEIOnUbe0jKN7qqq9-fvToy_m4fb_QDlZmIjDnxArjdtd2-ltrfjXi5HdUn4&usqp=CAU" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://dishub.bulelengkab.go.id/uploads/konten/logo-perhubungan-14.png" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://bic.id/wp-content/uploads/2025/02/logo-kementrian-bumn.webp" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://i.pinimg.com/736x/9a/19/06/9a1906ba201031c6436a9d4830c018fc.jpg" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://seni.co.id/wp-content/uploads/2024/12/Logo-Baru-Kemenkebud-fb@kementerian-kebudayaan-RI1-1024x1024.jpg" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/e/e6/DPR_RI_insignia.png" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://daftaronline.indonesiainjb.my/images/logo-kjri.png" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Coat_of_arms_of_Central_Java.svg/1200px-Coat_of_arms_of_Central_Java.svg.png" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6NiLBrpE5XvpewWqMsu-BadPFEvnO0XbdA&s" alt="Mobil 1" onclick="openSlideshow(0)">
+        <img class="thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Q00nHCRyG9nvJ_G9-ve0j8iQDMmnMr6a9Q&s" alt="Mobil 1" onclick="openSlideshow(0)">
+    </div>
+  </section>
+
+
+  <section id="about" aria-label="Tentang Rental Mobil Hidayah">
+    <h2>Tentang Kami</h2>
+    <h3>Rental Mobil Terpercaya</h3>
+    <p style="max-width:800px; margin: 0 auto 30px; font-size:1.1rem; color:#333; line-height:1.6;">
+      Rental Mobil Hidayah berdiri sejak tahun 2008 dengan tujuan memberikan layanan rental mobil yang profesional dan terpercaya bagi seluruh pelanggan. 
+      Kami memiliki armada mobil lengkap, bersih, terbaru dan selalu dalam kondisi prima serta layanan customer service yang ramah dan siap membantu Anda kapan saja. 
+      Dengan pengalaman bertahun-tahun, kami berusaha memberikan solusi transportasi yang mudah, aman, dan nyaman. Sewa mobil untuk keperluan perjalanan dinas kantor, bisnis, liburan, wisuda, atau acara pernikahan percayakan kepada kami.
+      <br />
+    </p>
+    <h3>Kontak & Alamat</h3>
+    <address>
+        Jl. Taman Borobudur Timur 4/3 RT08 RW 10, Kota Semarang, Jawa Tengah 50148<br />
+        Telepon: <a href="https://wa.me/6289521413525" aria-label="Telepon Rental Mobil"> 0895-2141-3525</a><br />
+        Email: <a href="mailto:info@rentalmobil.com" aria-label="Email Rental Mobil">info@rentalmobil.com</a><br />
+        Website: <a href="rentalmobilhidayah.com" aria-label="Email Rental Mobil">rentalmobilhidayah.com</a>
+      </address>
+    <h3>Sosial Media</h3>
+    <div class="social-links" role="list" aria-label="Sosial media Rental Mobil">
+        <a href="https://www.instagram.com/rental.mobil.semarang?igsh=MTJxZzZhbW4xNXBwcA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram Rental Mobil" role="listitem" tabindex="0" title="Instagram">
+          <svg width="28" height="28" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224.1 141c-63.6 0-115 51.4-115 115 0 63.6 51.4 115 115 115 63.6 0 115-51.4 115-115 0-63.6-51.4-115-115-115zm0 190.6c-41.9 0-75.6-33.7-75.6-75.6S182.2 180.4 224.1 180.4s75.6 33.7 75.6 75.6-33.7 75.6-75.6 75.6zm146.4-194.3c0 14.9-12.1 27-27 27s-27-12.1-27-27 12.1-27 27-27 27 12.1 27 27zm76.1 27.2c-.7-14.9-4.1-29.6-11.2-43.1-7.4-14.7-18.1-28.2-32.4-39.4-14-11.4-31.9-17.6-50.5-17.6-22.6 0-45.1 7.2-63.8 20.4-14.1 8.8-25.9 21.4-33.8 37.1-7.9 15.4-11.4 33-11 48.9 0 4.9.3 9.8.7 14.7 0 4.8 0 9.7.1 14.5 0 4.8.1 9.6.1 14.3l.2.7h.2l.3-.7c.2-4.8.4-9.5.4-14.3v-14.5c.3-4.8.7-9.7 1-14.6 0-2.7.3-5.4.4-8.1 0 0 4.9-38.4 48-38.4 46 0 52.9 31.3 52.9 48.1v39.5c0 11-1 19-1 19z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@rental.mobil.semarang?_t=ZS-8w5tqevHj3H&_r=1" target="_blank" rel="noopener noreferrer" aria-label="TikTok Rental Mobil" role="listitem" tabindex="0" title="TikTok">
+          <svg width="28" height="28" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M448,209.91a210.1,210.1,0,0,1-203.2-2.33V353.06a94.34,94.34,0,1,1-56.24-170.56v52.43a41.66,41.66,0,1,0,56.24,66.49V4h62.49Zm-82.83,68.6a71.78,71.78,0,0,1-29.06-5.58v87.51A94.34,94.34,0,1,1,191,186.88v42.16a41.66,41.66,0,1,0,56.23,66.49V303.16h-.15a72.16,72.16,0,0,1-4.25-.31c-.25-3-.42-6.07-.42-9.15a70.43,70.43,0,0,1,32-59.1v33.36A38.19,38.19,0,0,0,365.17,278.51Z"/></svg>
+        </a>
+    </p>
+    <div id="maps" aria-label="Peta lokasi Rental Mobil Hidayah di Google Maps" role="region">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.063198556491!2d110.37550207356682!3d-7.001840468576003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708ae1e5a6f807%3A0xc479d4fee2d58858!2sRental%20Mobil%20Hidayah%20Semarang!5e0!3m2!1sid!2sid!4v1746435982801!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+</main>
+
+<footer>
+    <p class="lead">2024 Rental Mobil Hidayah. All rights reserved.</p>
+  </footer>
+
+
+<script>
+  // FAQ toggle
+  const faqButtons = document.querySelectorAll('.faq-question');
+  faqButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !expanded);
+      const answer = document.getElementById(this.getAttribute('aria-controls'));
+      if (!expanded) {
+        answer.hidden = false;
+        answer.classList.add('open');
+        this.querySelector('.arrow').classList.add('open');
+      } else {
+        answer.hidden = true;
+        answer.classList.remove('open');
+        this.querySelector('.arrow').classList.remove('open');
+      }
+    });
+  });
+</script>
+</body>
+</html>
